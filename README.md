@@ -60,4 +60,4 @@ const Example = () => (
 ## Установка 
     npm i @volkov190/react-responsive
 
-[Ссылка на npm](https://www.npmjs.com/package/@volkov190/react-document-visibility)
+[Ссылка на npm](https://www.npmjs.com/package/@volkov190/react-responsive)
