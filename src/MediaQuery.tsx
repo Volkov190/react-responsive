@@ -13,50 +13,44 @@ interface MediaQueryPropsInterface {
 }
 
 const MediaQuery = (props: MediaQueryPropsInterface) => {
-  let minResolutionString = "";
-  if (typeof props.minResolution === "string") {
-    minResolutionString = "(min-resolution: " + props.minResolution + ")";
-  } else if (typeof props.minResolution === "number") {
-    minResolutionString = "(min-resolution: " + props.minResolution + "dppx)";
-  }
-  let maxResolutionString = "";
-  if (typeof props.maxResolution === "string") {
-    maxResolutionString = "(max-resolution: " + props.maxResolution + ")";
-  } else if (typeof props.minResolution === "number") {
-    maxResolutionString = "(max-resolution: " + props.maxResolution + "dppx)";
-  }
-  const minWidthString = props.minWidth
-    ? "(min-width: " + props.minWidth + "px)"
-    : "";
-  const maxWidthString = props.maxWidth
-    ? "(max-width: " + props.maxWidth + "px)"
-    : "";
-  const minHeightString = props.minHeight
-    ? "(min-height: " + props.minHeight + "px)"
-    : "";
-  const maxHeightString = props.maxHeight
-    ? "(max-height: " + props.maxHeight + "px)"
-    : "";
-  const orientationString = props.orientation
-    ? "(orientation: " + props.orientation + ")"
-    : "";
+  const mediaQueryArray: string[] = [];
 
-  const isMinResolution = useMediaQuery({ query: minResolutionString });
-  const isMaxResolution = useMediaQuery({ query: maxResolutionString });
-  const isMinWidth = useMediaQuery({ query: minWidthString });
-  const isMaxWidth = useMediaQuery({ query: maxWidthString });
-  const isMinHeight = useMediaQuery({ query: minHeightString });
-  const isMaxHeight = useMediaQuery({ query: maxHeightString });
-  const isOrientationRight = useMediaQuery({ query: orientationString });
+  if (props.minResolution) {
+    let minResolutionArray = ["(min-resolution: ", props.minResolution];
+    if (typeof props.minResolution === "string") {
+      minResolutionArray = [...minResolutionArray, ")"];
+    } else if (typeof props.minResolution === "number") {
+      minResolutionArray = [...minResolutionArray, "dppx)"];
+    }
+    mediaQueryArray.push(minResolutionArray.join(""));
+  }
 
-  const result =
-    isMinWidth &&
-    isMinResolution &&
-    isMaxResolution &&
-    isMaxWidth &&
-    isMinHeight &&
-    isMaxHeight &&
-    isOrientationRight;
+  if (props.maxResolution) {
+    let maxResolutionArray = ["(max-resolution: ", props.maxResolution];
+    if (typeof props.maxResolution === "string") {
+      maxResolutionArray = [...maxResolutionArray, ")"];
+    } else if (typeof props.minResolution === "number") {
+      maxResolutionArray = [...maxResolutionArray, "dppx)"];
+    }
+    mediaQueryArray.push(maxResolutionArray.join(""));
+  }
+
+  if (props.minWidth)
+    mediaQueryArray.push(["(min-width: ", props.minWidth, "px)"].join(""));
+
+  if (props.maxWidth)
+    mediaQueryArray.push(["(max-width: ", props.maxWidth, "px)"].join(""));
+
+  if (props.minHeight)
+    mediaQueryArray.push(["(min-height: ", props.minHeight, "px)"].join(""));
+
+  if (props.maxHeight)
+    mediaQueryArray.push(["(max-height: ", props.maxHeight, "px)"].join(""));
+
+  if (props.orientation)
+    mediaQueryArray.push(["(orientation: ", props.orientation, ")"].join(""));
+
+  const result = useMediaQuery({ query: mediaQueryArray.join(" and ") });
 
   if (props.children) {
     if (typeof props.children === "function")
