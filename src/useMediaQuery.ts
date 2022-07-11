@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 
 export const useMediaQuery = (media: { query: string }) => {
-  const mediaQuery = window.matchMedia(media.query);
-  const [isConditionTrue, setIsConditionTrue] = useState(mediaQuery.matches);
+  const [isConditionTrue, setIsConditionTrue] = useState(false);
 
   useEffect(() => {
+    const mediaQuery = window.matchMedia(media.query);
+    setIsConditionTrue(mediaQuery.matches);
     const listener = (e: { matches: boolean }) => {
       setIsConditionTrue(e.matches);
     };
@@ -14,7 +15,7 @@ export const useMediaQuery = (media: { query: string }) => {
     return () => {
       mediaQuery.removeEventListener("change", listener);
     };
-  }, []);
+  }, [media.query]);
 
-  return media.query ? isConditionTrue : true;
+  return isConditionTrue;
 };
