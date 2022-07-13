@@ -12,7 +12,27 @@ interface MediaQueryPropsInterface {
   maxHeight?: number;
 }
 
-const MediaQuery = (props: MediaQueryPropsInterface) => {
+type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<
+  T,
+  Exclude<keyof T, Keys>
+> &
+  {
+    [K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>>;
+  }[Keys];
+
+const MediaQuery = (
+  props: RequireAtLeastOne<
+    MediaQueryPropsInterface,
+    | "children"
+    | "orientation"
+    | "minResolution"
+    | "maxResolution"
+    | "minWidth"
+    | "maxWidth"
+    | "minHeight"
+    | "maxHeight"
+  >
+) => {
   const mediaQueryArray: string[] = [];
 
   Object.entries(props).map(([key, value]) => {
