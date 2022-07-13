@@ -52,17 +52,10 @@ const MediaQuery = (props: MediaQueryPropsInterface) => {
 
   const result = useMediaQuery({ query: mediaQueryArray.join(" and ") });
 
-  if (props.children) {
-    if (typeof props.children === "function")
-      return <>{props.children(result)}</>;
-    else if (
-      (typeof props.children === "object" ||
-        typeof props.children === "string") &&
-      result
-    )
-      return <>{props.children} </>;
-    else return null;
-  } else return null;
+  if (typeof props.children === "function")
+    return <>{props.children(result)}</>;
+  else if (result) return <>{props.children}</>;
+  else return null;
 };
 
 export default MediaQuery;
