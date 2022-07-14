@@ -27,34 +27,32 @@ type MediaQueryProps = RequireAtLeastOne<MediaQueryPropertiesInterface> &
   MediaQueryChildrenInterface;
 
 const MediaQuery = (props: MediaQueryProps) => {
-  const mediaQueryArray: string[] = [];
+  const propsCopy = Object.assign({}, props);
+  const children = propsCopy.children;
+  delete propsCopy.children;
+  const mediaQueryArray = Object.entries(propsCopy).map(([key, value]) => {
+    const oneQueryArray = [
+      "(",
+      key.replace(/[A-Z]/g, "-$&").toLowerCase(),
+      ": ",
+      value,
+    ];
 
-  Object.entries(props).map(([key, value]) => {
-    if (key !== "children") {
-      const oneQueryArray = [
-        "(",
-        key.replace(/[A-Z]/g, "-$&").toLowerCase(),
-        ": ",
-        value,
-      ];
-
-      if (key === "minResolution" || key === "maxResolution") {
-        if (typeof value === "number") oneQueryArray.push("dppx");
-      } else if (key !== "orientation") {
-        oneQueryArray.push("px");
-      }
-
-      oneQueryArray.push(")");
-
-      mediaQueryArray.push(oneQueryArray.join(""));
+    if (key === "minResolution" || key === "maxResolution") {
+      if (typeof value === "number") oneQueryArray.push("dppx");
+    } else if (key !== "orientation") {
+      oneQueryArray.push("px");
     }
+
+    oneQueryArray.push(")");
+
+    return oneQueryArray.join("");
   });
 
   const result = useMediaQuery({ query: mediaQueryArray.join(" and ") });
 
-  if (typeof props.children === "function")
-    return <>{props.children(result)}</>;
-  else if (result) return <>{props.children}</>;
+  if (typeof children === "function") return <>{children(result)}</>;
+  else if (result) return <>{children}</>;
   else return null;
 };
 
