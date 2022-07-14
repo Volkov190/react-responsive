@@ -1,8 +1,7 @@
 import React, { ReactNode } from "react";
 import { useMediaQuery } from "./useMediaQuery";
 
-interface MediaQueryPropsInterface {
-  children?: ReactNode | ((matches: boolean) => ReactNode);
+interface MediaQueryPropertiesInterface {
   orientation?: "portrait" | "landscape";
   minResolution?: number | `${number}dppx`;
   maxResolution?: number | `${number}dppx`;
@@ -10,6 +9,10 @@ interface MediaQueryPropsInterface {
   maxWidth?: number;
   minHeight?: number;
   maxHeight?: number;
+}
+
+interface MediaQueryChildrenInterface {
+  children: ReactNode | ((matches: boolean) => ReactNode);
 }
 
 type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<
@@ -20,19 +23,10 @@ type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<
     [K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>>;
   }[Keys];
 
-const MediaQuery = (
-  props: RequireAtLeastOne<
-    MediaQueryPropsInterface,
-    | "children"
-    | "orientation"
-    | "minResolution"
-    | "maxResolution"
-    | "minWidth"
-    | "maxWidth"
-    | "minHeight"
-    | "maxHeight"
-  >
-) => {
+type MediaQueryProps = RequireAtLeastOne<MediaQueryPropertiesInterface> &
+  MediaQueryChildrenInterface;
+
+const MediaQuery = (props: MediaQueryProps) => {
   const mediaQueryArray: string[] = [];
 
   Object.entries(props).map(([key, value]) => {
