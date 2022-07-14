@@ -1,6 +1,6 @@
 {
   "name": "@volkov190/react-responsive",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "react hook и компонент для работы с MediaQueryList",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/Volkov190/react-responsive#readme",
   "peerDependencies": {
-    "react": "^18.2.0"
+    "react": ">=16.8"
   },
   "devDependencies": {
     "@types/node": "^18.0.3",
