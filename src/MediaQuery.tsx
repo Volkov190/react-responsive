@@ -27,10 +27,8 @@ type MediaQueryProps = RequireAtLeastOne<MediaQueryPropertiesInterface> &
   MediaQueryChildrenInterface;
 
 const MediaQuery = (props: MediaQueryProps) => {
-  const propsCopy = Object.assign({}, props);
-  const children = propsCopy.children;
-  delete propsCopy.children;
-  const mediaQueryArray = Object.entries(propsCopy).map(([key, value]) => {
+  const { children, ...properties } = props;
+  const mediaQueryArray = Object.entries(properties).map(([key, value]) => {
     const oneQueryArray = [
       "(",
       key.replace(/[A-Z]/g, "-$&").toLowerCase(),
