@@ -26,9 +26,8 @@ type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<
 type MediaQueryProps = RequireAtLeastOne<MediaQueryPropertiesInterface> &
   MediaQueryChildrenInterface;
 
-const MediaQuery = (props: MediaQueryProps) => {
-  const { children, ...properties } = props;
-  const mediaQueryArray = Object.entries(properties).map(([key, value]) => {
+const MediaQuery = ({ children, ...props }: MediaQueryProps) => {
+  const mediaQueryArray = Object.entries(props).map(([key, value]) => {
     const oneQueryArray = [
       "(",
       key.replace(/[A-Z]/g, "-$&").toLowerCase(),
