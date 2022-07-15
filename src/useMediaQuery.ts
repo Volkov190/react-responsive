@@ -8,7 +8,7 @@ export const useMediaQuery = (media: { query: string }) => {
   useEffect(() => {
     const mediaQuery = window.matchMedia(media.query);
     setIsConditionTrue(mediaQuery.matches);
-    const listener = (e: { matches: boolean }) => {
+    const listener = (e: MediaQueryListEvent) => {
       setIsConditionTrue(e.matches);
     };
 
